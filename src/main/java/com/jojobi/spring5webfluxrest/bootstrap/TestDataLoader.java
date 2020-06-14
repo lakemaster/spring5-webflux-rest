@@ -24,25 +24,50 @@ public class TestDataLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        loadCategories();
-        loadVendors();
-    }
 
-    private void loadCategories() {
+        if (categoryRepository.count().block() == 0) {
+            //load data
+            log.debug("#### LOADING DATA ON BOOTSTRAP #####");
 
-        categoryRepository.save(Category.builder()
-                .description("Cat1")
-                .build()).block();
+            categoryRepository.save(Category.builder()
+                    .description("Fruits").build()).block();
 
-        log.debug("Categories loaded: {}", categoryRepository.count().block() );
-    }
+            categoryRepository.save(Category.builder()
+                    .description("Nuts").build()).block();
 
-    private void loadVendors() {
-        vendorRepository.save(Vendor.builder()
-                .firstName("Hans")
-                .lastName("Wurst")
-                .build()).block();
+            categoryRepository.save(Category.builder()
+                    .description("Breads").build()).block();
 
-        log.debug("Vendors loaded: {}", vendorRepository.count().block() );
+            categoryRepository.save(Category.builder()
+                    .description("Meats").build()).block();
+
+            categoryRepository.save(Category.builder()
+                    .description("Eggs").build()).block();
+
+            log.debug("Loaded Categories: {}", categoryRepository.count().block());
+
+            vendorRepository.save(Vendor.builder()
+                    .firstName("Joe")
+                    .lastName("Buck").build()).block();
+
+            vendorRepository.save(Vendor.builder()
+                    .firstName("Micheal")
+                    .lastName("Weston").build()).block();
+
+            vendorRepository.save(Vendor.builder()
+                    .firstName("Jessie")
+                    .lastName("Waters").build()).block();
+
+            vendorRepository.save(Vendor.builder()
+                    .firstName("Bill")
+                    .lastName("Nershi").build()).block();
+
+            vendorRepository.save(Vendor.builder()
+                    .firstName("Jimmy")
+                    .lastName("Buffett").build()).block();
+
+            log.debug("Loaded Vendors: {}", vendorRepository.count().block());
+
+        }
     }
 }
