@@ -7,16 +7,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
 @Document
-public class Category {
+public class Vendor {
 
     @Id
-    private String id;
+    public String id;
 
-    private String description;
+    private String firstName;
+    private String lastName;
+
 
     @Builder
-    public Category(String id, String description) {
+    public Vendor(String id, String firstName, String lastName) {
         this.id = id;
-        this.description = description;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 }
