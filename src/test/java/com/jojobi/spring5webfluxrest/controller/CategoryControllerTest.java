@@ -45,16 +45,15 @@ class CategoryControllerTest {
 
     @Test
     void testFindById() {
+        Category category = Category.builder().description("Cat1").build();
+
         BDDMockito.given(categoryRepository.findById("someId"))
-                .willReturn(Mono.just(Category.builder().description("Cat1").build()));
+                .willReturn(Mono.just(category));
 
         webTestClient.get()
                 .uri("/api/v1/categories/someId")
                 .exchange()
                 .expectBody(Category.class)
-                .value( category -> {
-                    if ( ! category.getDescription().equals("Cat1"))
-                        throw new RuntimeException("wrong data");
-                });
+                .isEqualTo(category);
     }
 }
