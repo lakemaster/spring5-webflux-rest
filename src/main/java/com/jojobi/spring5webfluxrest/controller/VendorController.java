@@ -2,6 +2,7 @@ package com.jojobi.spring5webfluxrest.controller;
 
 import com.jojobi.spring5webfluxrest.domain.Vendor;
 import com.jojobi.spring5webfluxrest.repositories.VendorRepository;
+import org.apache.logging.log4j.util.Strings;
 import org.reactivestreams.Publisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -38,4 +39,22 @@ public class VendorController {
         vendor.setId(id);
         return vendorRepository.save(vendor);
     }
+
+    @PatchMapping("/api/v1/vendors/{id}")
+    public Mono<Vendor> patch(@PathVariable String id, @RequestBody Vendor vendor) {
+        Vendor vendorToBePatched = vendorRepository.findById(id).block();
+
+        if ( vendorToBePatched != null ) {
+            if (!Strings.isEmpty(vendor.getFirstName())) {
+                vendorToBePatched.setFirstName(vendor.getFirstName());
+            }
+            if (!Strings.isEmpty(vendor.getLastName())) {
+                vendorToBePatched.setLastName(vendor.getLastName());
+            }
+
+            return vendorRepository.save(vendorToBePatched);
+        }
+        return Mono.empty();
+    }
+
 }
